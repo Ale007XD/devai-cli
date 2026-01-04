@@ -1,17 +1,31 @@
-name: Deploy
-on: [push]
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ main ]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Deploy to VPS
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /app/bot
-            git pull
+            cd /app/my_bot
+            git pull origin main
+            
+            # Создание .env файла из секретов GitHub
+            echo "TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}" > .env
+            echo "OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }}" >> .env
+            echo "ADMIN_ID=${{ secrets.ADMIN_ID }}" >> .env
+            echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
+            
+            # Перезапуск контейнера
             docker-compose up -d --build
