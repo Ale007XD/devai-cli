@@ -4,7 +4,7 @@ from sqlalchemy import BigInteger, Text, DateTime, select
 from datetime import datetime
 
 engine = create_async_engine("sqlite+aiosqlite:///history.db")
-Session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+Session = async_sessionmaker(engine, class_=AsyncSession)
 
 class Base(DeclarativeBase): pass
 
@@ -12,7 +12,7 @@ class ChatMessage(Base):
     __tablename__ = "history"
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(BigInteger)
-    role: Mapped[str] = mapped_column(Text)  # 'user' или 'assistant'
+    role: Mapped[str] = mapped_column(Text)
     content: Mapped[str] = mapped_column(Text)
     dt: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
 
