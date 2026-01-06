@@ -10,3 +10,27 @@ services:
       - ./CLAUDE.md:/app/CLAUDE.md
     ports:
       - "8080:8080"
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: multiagent-bot
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - bot_history:/app/history
+      - bot_skills:/app/skills
+      - bot_context:/app/CLAUDE.md
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import aiogram; print('OK')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  bot_history:
+  bot_skills:
+  bot_context:
