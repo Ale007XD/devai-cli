@@ -6,11 +6,13 @@ class BaseAgent:
     def __init__(self, api_key: str):
         self.api_key = api_key
         self.url = "https://openrouter.ai/api/v1/chat/completions"
-        # Список бесплатных моделей в порядке приоритета
+        
+        # Обновленный список моделей (agents/base.py)
         self.fallback_chain = [
-            "meta-llama/llama-3.1-8b-instruct:free",   # Приоритет 1
-            "mistralai/mistral-7b-instruct:free",      # Приоритет 2
-            "microsoft/phi-3-medium-128k-instruct:free" # Приоритет 3 (последний шанс)
+            "meta-llama/llama-3.3-70b-instruct:free", # Самая умная (Smartest)
+            "mistralai/mistral-nemo:free",            # Самая стабильная (Stable)
+            "google/gemma-2-9b-it:free",              # Резерв (Backup)
+            "microsoft/phi-3-medium-128k-instruct:free" # Последний шанс
         ]
 
     async def _call(self, model: str, messages: list, attempt: int = 0) -> str:
