@@ -1,16 +1,4 @@
 version: '3.8'
-services:
-  bot:
-    build: .
-    restart: always
-    env_file: .env
-    volumes:
-      - ./history:/app/history
-      - ./skills:/app/skills
-      - ./CLAUDE.md:/app/CLAUDE.md
-    ports:
-      - "8080:8080"
-version: '3.8'
 
 services:
   bot:
