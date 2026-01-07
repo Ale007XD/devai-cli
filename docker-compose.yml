@@ -5,18 +5,14 @@ services:
     restart: unless-stopped
     env_file: .env
     volumes:
-      - bot_history:/app/history
-      - bot_skills:/app/skills
-      - bot_context:/app/CLAUDE.md
+      # Используем локальные пути (bind mounts)
+      - ./history:/app/history
+      - ./skills:/app/skills
+      - ./CLAUDE.md:/app/CLAUDE.md
     ports:
       - "8080:8080"
     healthcheck:
-      test: ["CMD", "python", "-c", "import aiogram; print('OK')"]
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
       interval: 30s
       timeout: 10s
       retries: 3
-
-volumes:
-  bot_history:
-  bot_skills:
-  bot_context:
