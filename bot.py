@@ -74,8 +74,15 @@ def load_skills():
 
 @dp.message(Command("start"))
 async def cmd_start(m: types.Message):
-    await m.answer("🤖 **Бот активен!**\n\nКоманды:\n/plan <задача> - Планировщик\n/travel - Путешествия (AI)\n/new_skill - Создать навык\n/reload - Перезагрузка", parse_mode="Markdown")
-
+    await m.answer(
+        "🤖 Бот активен!\n\n"
+        "Команды:\n"
+        "/plan <задача> - Планировщик\n"
+        "/travel - Путешествия (AI)\n"
+        "/new_skill - Создать навык\n"
+        "/reload - Перезагрузка"
+    )
+    
 @dp.message(Command("plan"))
 async def handle_plan(m: types.Message):
     task = m.text.replace("/plan", "").strip()
